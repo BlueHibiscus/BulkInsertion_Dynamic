@@ -1,8 +1,8 @@
 
 			/* HOW TO USE SQL QUERY BULK INSERT TO LOOP THROUGH ALL THE FILES IN A FOLDER AND LOAD INTO SQL SERVER DATABASE TABLES */
 
-	Use RidaProj
-	Go
+	USE SQLSTUDIES
+	GO
 
 
 	EXEC sp_configure 'show advanced options', 1    
