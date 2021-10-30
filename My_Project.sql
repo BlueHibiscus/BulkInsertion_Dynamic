@@ -26,7 +26,7 @@
 	GO
 
 
-------CREATING A TEMPORARY TABLE----------
+------CREATING A TEMPORARY TABLE---------- 
 
 CREATE TABLE ##TMP (ID int identity, COL1 varchar(200))
 
