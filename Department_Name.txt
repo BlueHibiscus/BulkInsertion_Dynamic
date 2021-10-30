@@ -1,0 +1,13 @@
+
+DepartmentID,Job_Title,GroupName,
+1,Sr Software Engineer,Research and Development, 
+2,Tool Design,Research and Development,
+3,Recruting Manager,Sales and Marketing,
+4,Accountant Manager,Sales and Marketing,
+5,Help Desk Technician,General and Administration, 
+6,Software Engineer,Research and Development, 
+7,Safety Clerk,General and Administration,
+8,Production Control,Manufacturing,
+9,Human Resources,Executive General and Administration,
+10,Staff Accountant,Sales and Marketing,
+11,Marketing Manager,Sales and Marketing,
