@@ -1,7 +1,16 @@
+How to access windows file system folder and loop through files using T-SQL and Load data into SQL Server tables using BULK INSERT Script.
+Build a database and table quickly for Crime Statistics data of South Australia to analyse or practice using below script.
 
-			/* HOW TO USE SQL QUERY BULK INSERT TO LOOP THROUGH ALL THE FILES IN A FOLDER AND LOAD INTO SQL SERVER DATABASE TABLES */
+SQL Script:
+/* How to use SQL QUERY BULK INSERT to loop through all the files in a folder and load into SQL Server Database Tables. */
+/* How to load Crime Statistics Australia data to Database tables quickly. */
+			
+			
+	/* TO ACCESS WINDOW FILE SYSTEM FOLDER AND LOOP THROUGH FILES USING SQL QUERY BULK INSERT AND LOAD DATA INTO SQL SERVER TABLES BY BULK INSERT SCRIPT*/ 
+	/* TO USE SQL QUERY BULK INSERT TO LOOP THROUGH ALL THE FILES IN A FOLDER AND LOAD INTO SQL SERVER DATABASE TABLES */
 
-	USE SQLSTUDIES
+	
+	USE MASTER
 	GO
 
 
@@ -12,58 +21,67 @@
 	EXEC sp_configure 'xp_cmdshell', 1 
 	RECONFIGURE 
 	GO
+	
+	/* DROP DATABASE SQLSTUDIES
+	  GO */
 
-		--TO USE TEMPDB
+	CREATE DATABASE SQLSTUDIES
+	GO
+
+
+	------- USING TEMPDB TO CREATE TEMPORATY TABLE----
 	USE TEMPDB
 	GO
 
--------CHECKING FOR EXISTENCE OF THIS TABLE-----
+	-------CHECKING FOR EXISTENCE OF THIS TABLE-----
 
 	IF OBJECT_ID ('##TMP') IS NOT NULL 
 
+	------IF THE TABLE ALREADY EXISTS, DROP IT--------
 	DROP TABLE ##TMP
-
 	GO
 
 
-------CREATING A TEMPORARY TABLE---------- 
-
-CREATE TABLE ##TMP (ID int identity, COL1 varchar(200))
-
-INSERT INTO ##tmp
-
-EXEC xp_cmdshell 'dir /B "C:\Filetext\AllFiles"';
-
-
---USING RIDAPROJ DATABASE
-
-USE RIDAPROJ
-GO
-
-
-DECLARE @TIMES INT=1
-
-WHILE @TIMES<(SELECT COUNT(*) FROM ##TMP)
-
-BEGIN
-                
-				/* CREATING WITH A TABLE PROJECT TWO COLUMNS  */
-
-CREATE TABLE PROJECT (ID INT IDENTITY, ITEM VARCHAR (5000))
-
-	DECLARE @FILENAME VARCHAR(100)=''
+	------CREATING A TEMPORARY TABLE ---------- 
+	/* TO LOAD DATA FROM THE FOLDER AND FILES FILES TO THE TEMP TABLE QUICKLY   */
 	
-	SET @FILENAME = ( SELECT COL1 FROM ##TMP WHERE ID=@TIMES ) 
+	CREATE TABLE ##TMP (ID int identity, COL1 varchar(200))
+
+	INSERT INTO ##tmp
+
+	EXEC xp_cmdshell 'dir /B "C:\Filetext\AllFiles"';
+
+
+	--------USING SQLSTUDIES DATABASE ------
+
+	USE RIDAPROJ
+	GO
+
+	DECLARE @TIMES INT=1
+
+	WHILE @TIMES<(SELECT COUNT(*) FROM ##TMP)
 	
+	/* CREATING A TABLE 'PROJECT' WITH  TWO COLUMNS  ID AND ITEM  */
 
-	DECLARE @SQL NVARCHAR(MAX);
-	SET @sql= 'INSERT PROJECT( ITEM ) SELECT VALUE FROM OPENROWSET
-				( BULK ''C:\Filetext\AllFiles\'+ @FILENAME+''', 
-				FORMATFILE = ''C:\Filetext\pad_bulk_import.fmt'') a';
+	BEGIN
+           
+		CREATE TABLE PROJECT (ID INT IDENTITY, ITEM VARCHAR (5000))
 
-    EXEC sys.sp_executesql @SQL;
+		DECLARE @FILENAME VARCHAR(100)=''
+	
+		SET @FILENAME = ( SELECT COL1 FROM ##TMP WHERE ID=@TIMES ) 
+	
+		DECLARE @SQL NVARCHAR(MAX);
+	
+		SET @sql= 'INSERT PROJECT( ITEM )  SELECT VALUE FROM OPENROWSET
+				                 ( BULK ''C:\Filetext\AllFiles\'+ @FILENAME+''', 
+				                   FORMATFILE = ''C:\Filetext\pad_bulk_import.fmt'') MYFILE';
 
+    		EXEC SYS.SP_EXECUTESQL @SQL;
 
+	/* THE FILES FROM THE FOLDER ARE NOW RESIDING IN PROJECT TABLE /*
+	/* CREATING THE TABLE DYNAMICALLY PRESENT IN THE FOLDER */
+	
 		DECLARE @COL VARCHAR(200)
 				
 		DECLARE @A INT =0, @B INT 
@@ -71,14 +89,12 @@ CREATE TABLE PROJECT (ID INT IDENTITY, ITEM VARCHAR (5000))
 		DECLARE @SQLK NVARCHAR(MAX),@SQL1 NVARCHAR(MAX),@SQL2 NVARCHAR(MAX)=' ',@SQL3 NVARCHAR(MAX)
 
 		DECLARE @N INT =0
-
-
-
 		
+	/* THE SECOND RECORD IN PROJECT TABLE WILL DYNAMICALLY BE CREATED AS THE THE COLUMN NAMES OF THE TABLE */ 	
+
 		DECLARE @LISTOFCOLUMNS VARCHAR(400) = ( SELECT ITEM FROM PROJECT WHERE ID=2 )
 
 		DECLARE @K INT = (SELECT (LEN(@ListofColumns) - LEN(REPLACE(@LISTOFCOLUMNS,',','')) ) AS MyCol2Count)
-
 
 		DECLARE  @CHAR INT = CHARINDEX('.',@FILENAME)
 
@@ -86,66 +102,64 @@ CREATE TABLE PROJECT (ID INT IDENTITY, ITEM VARCHAR (5000))
 
 		SET @SUB = SUBSTRING(@FILENAME, 0 , @CHAR)
 
-					/* CREATING EACH TABLE PRESENT IN FOLDER  */
-
 		SET  @SQLK = 'CREATE TABLE '+@SUB+'  ('
 		
 
-
 			 WHILE(@n<= @k-1)
+			 
+	/* SELECTING ONLY THE DATA PRESENT WITHIN THE TWO COMMAS (',') AS FIELDS OF THE TABLE */
 
 				 BEGIN
 	
-					SELECT @b = CHARINDEX(',',ITEM,@a)  FROM PROJECT WHERE ID = 2
+					----- USING SYSYEM FUNCTIONS TO SEGGREGATE THE COLUMNS WITHIN THE ROW WHOSE ID IS 2------
+					
+					SELECT  @B =   CHARINDEX(',',ITEM,@A)  FROM PROJECT WHERE ID = 2
 			
-					SELECT  @COL = SUBSTRING(ITEM,@a,@b-@a) FROM PROJECT WHERE ID = 2
+					SELECT  @COL = SUBSTRING(ITEM,@A,@B-@A) FROM PROJECT WHERE ID = 2
 
 
-									---  TO CHECK IF INVALID DATA IS NOT BEING ENTERED--- 
+					/* USING SYSTEM FUNCTIONS TO CHECK DATA INTEGRITY AND AVOIDING INVALID DATA ENTRY,
+					   SPECIAL CHARACTERS, NUMBERS , SPACES ARE CHECKED AND PREVENTED FROM MAKING AN ENTRY */ 
 
 
-					DECLARE  @p INT, @string VARCHAR(40) = @col
+					DECLARE  @P INT, @STRING VARCHAR(40) = @col
 
 
-					SELECT @p = PATINDEX ('%[^a-zA-Z_]%',@string)
+					SELECT @P = PATINDEX ('%[^a-zA-Z_]%',@STRING)
  
-						WHILE @p > 0
+							WHILE @P > 0
 
-							BEGIN
+								BEGIN
 
-							SELECT @string = REPLACE(@string,SUBSTRING(@string,@p,1),'')
+									SELECT @STRING = REPLACE(@STRING,SUBSTRING(@STRING,@P,1),'')
 
-							SELECT @p = PATINDEX ('%[^a-zA-Z_]%',@string)
+									SELECT @P = PATINDEX ('%[^a-zA-Z_]%',@STRING)
 
-		
-						END
-
-			
-			
-						IF (@n< @k-1)
-
-							BEGIN
+								END
+							
+							IF (@N < @K-1)
+							
+								BEGIN
 		  
-								SET @sql1= @string+ ' VARCHAR(200), ' 
+									SET @SQL1 = @STRING + ' VARCHAR(200), ' 
 				
-								SET @sql2 = @sql2+@sql1 
+									SET @SQL2 = @SQL2 + @SQL1  
 		
-							END
+								END
 	
-			   SET @a=@b+1
+			   						SET @A = @B +1
 
-			   SET @n=@n+1
+			   						SET @N = @N + 1
 		
-			End
+				END
 
 
-		SET @sql3 = @sqlk + @sql2 + @string + ' VARCHAR(200))'
+		SET @SQL3 = @SQLK + @SQL2 + @STRING + ' VARCHAR(200))'
 		 
-		EXEC sp_executesql @sql3
+		EXEC SP_EXECUTESQL @SQL3
 
-
-
-		/*TO INSERT VALUES IN TABLES*/
+		
+	/* CODE TO INSERT ROWS DYNAMICALLY IN THE TABLES */
 
 
 		DECLARE @sqlStr NVARCHAR(MAX) = 'INSERT INTO ' + @SUB+ ' VALUES ';
@@ -156,101 +170,101 @@ CREATE TABLE PROJECT (ID INT IDENTITY, ITEM VARCHAR (5000))
 
 		DECLARE @valString VARCHAR(8000) = '';
 
-		DECLARE @t INT = 3;
+		DECLARE @T INT = 3;
 
 
-				WHILE (@t <= (SELECT COUNT(*) FROM Project))
+				WHILE (@T <= (SELECT COUNT(*) FROM PROJECT))
 
-						BEGIN
+					BEGIN
 	   
-							DECLARE @pos INT = 0;
+	   					--SELECT @pos, @len, @value /*  THESE VARIABLES ARE USED FOR DEBUGGING */
+							
+						DECLARE @POS INT = 0;
 
-							DECLARE @len INT = 0;
+						DECLARE @LEN INT = 0;
 
-							DECLARE @tempStr VARCHAR(8000) = '';
+						DECLARE @tempStr VARCHAR(8000) = '';
 
-							SELECT @valueList = Item FROM Project WHERE Id = @t;
+						SELECT @valueList = ITEM FROM PROJECT WHERE ID = @T;
 
 
+							WHILE CHARINDEX(',', @valueList, @POS+1) > 0
 
-								WHILE CHARINDEX(',', @valueList, @pos+1) > 0
+							       BEGIN
 
-									 BEGIN
+									SET @len = CHARINDEX(',', @valueList, @POS+1) - @pos
 
-										SET @len = CHARINDEX(',', @valueList, @pos+1) - @pos
+									SET @value = SUBSTRING(@valueList, @POS, @LEN)
 
-										SET @value = SUBSTRING(@valueList, @pos, @len)
-
-												 --SELECT @pos, @len, @value /* this is here for debugging */
-
+								/* USING SYSTEM FUNCTIONS TO CHECK DATA INTEGRITY AND AVOIDING INVALID DATA ENTRY,
+					   			   SPECIAL CHARACTERS, NUMBERS , SPACES ARE CHECKED AND PREVENTED FROM MAKING AN ENTRY */ 
+						
                     
+									DECLARE @p1 INT, @string1 VARCHAR(4000) = @value
 
+									SELECT @p1 = PATINDEX ('%[^a-zA-Z0-9-._ ]%',@string1)
 
-												/* TO CHECK IN INVALID DATA IS NOT BEING ENTERED  */
+										WHILE @p1 > 0
 
+											BEGIN
 
-										DECLARE @p1 INT, @string1 VARCHAR(4000) = @value
+												SELECT @STRING1 = REPLACE(@STRING1,SUBSTRING(@STRING1,@P1,1),'')
 
-										SELECT @p1 = PATINDEX ('%[^a-zA-Z0-9-._ ]%',@string1)
-
-											WHILE @p1 > 0
-
-													BEGIN
-
-													Select @string1 = REPLACE(@string1,SUBSTRING(@string1,@p1,1),'')
-
-													SELECT @p1 = PATINDEX ('%[^a-zA-Z0-9-._ ]%',@string1)
+												SELECT @P1 = PATINDEX ('%[^a-zA-Z0-9-._ ]%',@STRING1)
 		
-													END
+											END
 
 
+								SET @tempStr = @tempStr + ',''' + @string1 + '''';
 
+								SET @POS = CHARINDEX(',', @valueList, @POS +@LEN) +1
 
-
-
-									 SET @tempStr = @tempStr + ',''' + @string1 + '''';
-
-									SET @pos = CHARINDEX(',', @valueList, @pos+@len) +1
-
-						   END
+						   		END
 
              
-
-                SET @valString = @valString + '(' + SUBSTRING(@tempStr, 2, LEN(@tempStr)) + '),';
+             				SET @valString = @valString + '(' + SUBSTRING(@tempStr, 2, LEN(@tempStr)) + '),';
 
 			
+                			SET @T = @T + 1;
 
-                SET @t = @t + 1;
-
-           END
+           				END
 
  
-SET @sqlStr = @sqlStr + SUBSTRING(@valString, 0, LEN(@valString));
+		SET @sqlStr = @sqlStr + SUBSTRING(@valString, 0, LEN(@valString));
 
+		EXEC SP_EXECUTESQL @sqlStr;
 
-EXEC sp_executesql @sqlStr;
+		SET @TIMES = @TIMES +1
 
-SET @TIMES = @TIMES +1
+	/* TABLE PROJECT IS DROP EACH TIME WHEN THE LOOP........................*/
+		
+		DROP TABLE PROJECT
 
-DROP TABLE PROJECT
-
-END
+	END
   
-					/* CHECK THE TABLES  */
+	
+	-------- TESTING THE THE CODE ----------
+	/* CHECK THE DYNAMICALLY CREATED TABLES WHICH WERE FILES IN THE FOLDER, THE TABLENAME ARE SAME AS THE FILE NAME  */
 
-  SELECT * FROM ADDRESSTYPE
-  SELECT * FROM DEPARTMENT_NAME
-  SELECT * FROM PERSONAL_DETAILS
-  SELECT * FROM EMP_DETAILS
+  	SELECT * FROM ADDRESSTYPE
+	
+ 	SELECT * FROM DEPARTMENT_NAME
+  	
+	SELECT * FROM PERSONAL_DETAILS
+  	
+	SELECT * FROM EMP_DETAILS
 
   
+	---------- CLEAN UP --------------------
+   	/* DROP ALL THE TABLES */
 
-   /* DROP ALL THE TABLES */
-
---DROP TABLE ADDRESSTYPE
---DROP TABLE DEPARTMENT_NAME
---DROP TABLE EMP_DETAILS
---DROP TABLE PERSONAL_DETAILS
+	DROP TABLE ADDRESSTYPE
+	
+	DROP TABLE DEPARTMENT_NAME
+	
+	DROP TABLE EMP_DETAILS
+	
+	DROP TABLE PERSONAL_DETAILS
 
 
 
