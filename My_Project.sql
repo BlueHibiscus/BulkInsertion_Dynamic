@@ -1,12 +1,7 @@
-How to access windows file system folder and loop through files using T-SQL and Load data into SQL Server tables using BULK INSERT Script.
-Build a database and table quickly for Crime Statistics data of South Australia to analyse or practice using below script.
 
-SQL Script:
-/* How to use SQL QUERY BULK INSERT to loop through all the files in a folder and load into SQL Server Database Tables. */
-/* How to load Crime Statistics Australia data to Database tables quickly. */
+
 			
-			
-	/* TO ACCESS WINDOW FILE SYSTEM FOLDER AND LOOP THROUGH FILES USING SQL QUERY BULK INSERT AND LOAD DATA INTO SQL SERVER TABLES BY BULK INSERT SCRIPT*/ 
+	/* TO ACCESS WINDOW FILE SYSTEM FOLDER AND LOOP THROUGH FILES USING SQL QUERY BULK INSERT AND LOAD DATA INTO SQL SERVER TABLES BY BULK INSERT SCRIPT */ 
 	/* TO USE SQL QUERY BULK INSERT TO LOOP THROUGH ALL THE FILES IN A FOLDER AND LOAD INTO SQL SERVER DATABASE TABLES */
 
 	
