@@ -2,12 +2,9 @@
 HOW TO CREATE THE TABLES , COLUMNS AND INSERT RECORDS INTO THEM DYNAMICALLY. THE DATA IN .TXT FILE IS COLLECTED BY USING SQL QUERY BULK INSERT TO LOOP THROUGH ALL THE FILES IN A FOLDER AND LOADED INTO SQL SERVER DATABASE TABLES. 
 
 ### Instructions:
-For this project, you need SQL SERVER software in your system. Create notepad files and save them with 
+1.For this project, you need SQL SERVER software in your system. Create notepad files and save them with the names of the table you want to create in SQL Server. Save them in ‘AllFiles’ folder inside the ‘Filetext’ Folder, inside C drive.  
+Save ‘Pad_bulk_import’ file inside’ Filetext’ folder in c drive.
 
-the names of the table you want to create in SQL Server. Save them in ‘AllFiles’ folder inside the ‘Filetext’ 
-
-Folder, inside C drive.  
-Save ‘Pad_bulk_import’ file inside’ Filetext’ folder in c:
 Instructions:
 1.The name of your file will be the name of your table. For example the name of the file in the folder is 
 
