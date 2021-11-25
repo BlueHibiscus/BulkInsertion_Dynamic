@@ -25,33 +25,20 @@ the last row entry too.
 
 1) Data is dumped from various resources and platforms in .txt format.  
 2) xp_xmdshell makes the job easy to run any command line process and can also embed within stored 
-
 procedures, jobs or batch processing. This option is now enabled by 1 using Master Database
 3) My job is to collect the data from files present in the folder and import into SQL Server. OPENROWSET is 
-
 a T-SQL function that allows for reading data from many sources including using the SQL Server's BULK 
-
 import capability. One of the useful features of the BULK provider is its ability to read individual files from the 
-
 file system into SQL Server, such as loading a data from a text file  into a SQL Server table.
 4) All the files are imported from the folder by creating a temporary table in Temp database with two columns. 
-
 First column is  an identity function for generating the numbers sequntially, the second column consists all the 
-
 remaining data of the '.txt' files.  
 5) In User defined database 'SQL Studies' we create a table 'Project'  with two columns and insert data from 
-
 temporary table into Project table using Formatfile.
-
 6) The files from the folder are now residing in Project table as rows and columns.
-
-
 7) Now tables are created dynamically with each record in Project table.
-
-8)  The second record in Project table will dynamically be created as the column names of the table. 
-
+8) 8)  The second record in Project table will dynamically be created as the column names of the table. 
 9) System functions like Charindex(), Substring() etc are used to seggregate the columns within the rows .
-
 10) To maintain Data integraity and avoid invalid data insertion, the system functions patindex() and 
 substring() are used.
 
