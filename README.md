@@ -1,9 +1,7 @@
 # BulkInsertion_Dynamic
 HOW TO CREATE THE TABLES , COLUMNS AND INSERT RECORDS INTO THEM DYNAMICALLY. THE DATA IN .TXT FILE IS COLLECTED BY USING SQL QUERY BULK INSERT TO LOOP THROUGH ALL THE FILES IN A FOLDER AND LOADED INTO SQL SERVER DATABASE TABLES. 
 
-Readme 
-Purpose
-###Instructions:
+### Instructions:
 For this project, you need SQL SERVER software in your system. Create notepad files and save them with 
 
 the names of the table you want to create in SQL Server. Save them in ‘AllFiles’ folder inside the ‘Filetext’ 
@@ -23,7 +21,7 @@ comma (‘,’) separator. Don’t forget to put a comma after the last column n
 the last row entry too.
 5.Press enter only to create rows, Otherwise don’t.
 
-###Explanation:
+### Explanation:
 
 1) Data is dumped from various resources and platforms in .txt format.  
 2) xp_xmdshell makes the job easy to run any command line process and can also embed within stored 
