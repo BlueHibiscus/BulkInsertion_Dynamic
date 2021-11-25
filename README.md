@@ -2,13 +2,14 @@
 HOW TO CREATE THE TABLES , COLUMNS AND INSERT RECORDS INTO THEM DYNAMICALLY. THE DATA IN .TXT FILE IS COLLECTED BY USING SQL QUERY BULK INSERT TO LOOP THROUGH ALL THE FILES IN A FOLDER AND LOADED INTO SQL SERVER DATABASE TABLES. 
 
 ### Instructions:
-1.For this project, you need SQL SERVER software in your system. Create notepad files and save them with the name of the table you want to create in SQL Server. Save them in ‘AllFiles’ folder inside the ‘Filetext’ Folder, inside C drive.  
-2.Save ‘Pad_bulk_import’ file inside’ Filetext’ folder in c drive.
-3.The name of your file will be the name of your table. For example the name of the file in the folder is 'MyEmployeeTable' then the name of the table will also be 'MyEmployeeTable'.
-4.The first line in notepad will be your Schema name.
-5.The second line in notepad will be your column names of the table. The column nmes are separated by comma (‘,’) separator. Don’t forget to put a comma after the last column name too.
-6.Start filling the rows of your table from the third line. Separate the data using comma (‘,’). Put comma after the last row entry too.
-5.Press enter only to create rows, Otherwise don’t.
+
+1) For this project, you need SQL SERVER software in your system. Create notepad files and save them with the name of the table you want to create in SQL Server. Save them in ‘AllFiles’ folder inside the ‘Filetext’ Folder, inside C drive.  
+2) Save ‘Pad_bulk_import’ file inside’ Filetext’ folder in c drive.
+3) The name of your file will be the name of your table. For example the name of the file in the folder is 'MyEmployeeTable' then the name of the table will also be 'MyEmployeeTable'.
+4) The first line in notepad will be your Schema name.
+5) The second line in notepad will be your column names of the table. The column nmes are separated by comma (‘,’) separator. Don’t forget to put a comma after the last column name too.
+6) Start filling the rows of your table from the third line. Separate the data using comma (‘,’). Put comma after the last row entry too.
+5) Press enter only to create rows, Otherwise don’t.
 
 ### Explanation:
 
