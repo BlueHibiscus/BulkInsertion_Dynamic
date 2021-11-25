@@ -7,7 +7,7 @@ HOW TO CREATE THE TABLES , COLUMNS AND INSERT RECORDS INTO THEM DYNAMICALLY. THE
 3.The name of your file will be the name of your table. For example the name of the file in the folder is 'MyEmployeeTable' then the name of the table will also be 'MyEmployeeTable'.
 4.The first line in notepad will be your Schema name.
 5.The second line in notepad will be your column names of the table. The column nmes are separated by comma (‘,’) separator. Don’t forget to put a comma after the last column name too.
-6.Start filling the rows of your table from the third line. Separate the data using comma (‘,’). Put comma aftervthe last row entry too.
+6.Start filling the rows of your table from the third line. Separate the data using comma (‘,’). Put comma after the last row entry too.
 5.Press enter only to create rows, Otherwise don’t.
 
 ### Explanation:
